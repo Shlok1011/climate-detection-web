@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import "./SearchBox.css";
 import { useState } from 'react';
 
-export default function SearchBox({updateInfo}){
+export default function SearchBox({updateInfo, setLoading}){
   
     let [city,setCity] = useState("");
     let [error,setError] = useState(false);
@@ -13,6 +13,7 @@ export default function SearchBox({updateInfo}){
 
     let weatherInfo = async ()=>{
         try{
+        setLoading(true)
         let responce = await fetch(`${API_URL}?q=${city}&appid=${API_KEY}`);
         let jasonResponce = await responce.json();
         let lat = jasonResponce[0].lat;
@@ -28,7 +29,9 @@ export default function SearchBox({updateInfo}){
         return result;
         }catch(err){
             throw(err);
-         };
+        }finally{
+            setLoading(false);
+        }
     }
 
         let handleChange = (evt)=>{
@@ -46,15 +49,17 @@ export default function SearchBox({updateInfo}){
             setError(true);
              }
         };
+
     return(
         <div className="SearchBox">
             <form onSubmit={handleSubmit}>
                  <TextField id="city" label="City Name" variant="outlined" value={city}
                  onChange={handleChange}/>
-                 <br /><br />
+                 <br />
                  <br /><br />
                  <Button variant="contained" type='submit'>Send City</Button>
                  {error && <p style={{color:"red"}}>please check your internet connection <br/> or type a valid name</p>}
+                 <br />
              </form>
         </div>
     );

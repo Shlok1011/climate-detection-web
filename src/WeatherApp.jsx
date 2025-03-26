@@ -15,16 +15,18 @@ export default function WeatherApp(){
         temp_max: 27.93,
         temp_min: 27.93
     });
+    const [loading, setLoading] = useState(false)
 
     let updateInfo=(newInfo)=>{
         setWeatherInfo(newInfo);
     };
-
+    
     return(
         <div style={{textAlign:"center"}}>
-            <h2>Weather App by Shlok</h2>
-            <SearchBox updateInfo={updateInfo}/>
-            <InfoBox info={weatherInfo}/>
+            <h2 style={{textDecoration:"underline",color:"blue"}}>Weather App by Shlok</h2>
+            <SearchBox updateInfo={updateInfo} setLoading={setLoading}/>
+            <InfoBox info={weatherInfo} loading={loading}/>
+             
         </div>
     );
 }
